@@ -1,0 +1,17 @@
+JS Naming Convention. 03-May-2014
+
+NB: I've created this document for my own personal santity, I have a habit of forgetting the naming convention I'm sticking
+to in JavaScript since there doesn't seem to be one, single agreed standard on this matter. 
+
+The standard is as follows 
+
+modules/namespaces : lowercase, one word. 
+module/namespace filenames: one new word (the module name) will be appended to the file name in lower case, each module part will be separated by a dot (.) 
+classes: CamelCase 
+methods (any kind of method) : mixedCase
+local and public vars: mixedCase
+private vars and private methods: _mixedCase
+constants: UPPERCASE 
+enumerations: the enumeration 'class' will be treated as such, so it will be CamelCase, the variables inside will be treated as constants, so UPPERCASE
+
+If anything else pops into my head, I will update this doc. 
