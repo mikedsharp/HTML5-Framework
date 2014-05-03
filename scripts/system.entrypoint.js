@@ -4,7 +4,8 @@
         // call init for all subsystems here
 	    system.windowmanagement.init();
 	    // events
-	    system.event.keymonitor.init(); 
+	    system.event.keymonitor.init();
+	    system.event.mousemonitor.init()
         // game specific starting points
 	    game.state.statemanager.init(); 
 	}

@@ -27,7 +27,8 @@
 
 	// I'll devise a better way to handle this, than this if else ladder some time soon.
 	my.keyDown = function (event) {
-		if (event.keyCode == my.KeyCodes.KEY_LEFT) { // left
+
+	    if (event.keyCode == my.KeyCodes.KEY_LEFT) { // left
 			my.keyStates.left = true;
 		}
 		else if (event.keyCode == my.KeyCodes.KEY_RIGHT) { // right 
@@ -84,6 +85,8 @@
 		my.keyStates.right = false;
 		my.keyStates.up = false;
 		my.keyStates.down = false;
+		my.keyStates.enter = false;
+		my.keyStates.spaceBar = false;
 	}
 
 
