@@ -16,17 +16,36 @@
         my.sprites.push(new game.Sprite({ x: config.screenWidth - 48, y: (config.screenHeight / 2) - 32 + 6, width: 32, z: 4, height: 32, click: { id: 'button5', propagate: false } }));
         my.sprites.push(new game.Sprite({ x: config.screenWidth - 48, y: (config.screenHeight / 2) - 0 + 12, width: 32, z: 5, height: 32, click: { id: 'button6', propagate: false } }));
 
+        my.sprites.sort(function (a, b) {
+            var zA = 0, zB = 0;
+            if (a.z) {
+                zA = a.z;
+            }
+            if (b.z) {
+                zB = b.z;
+            }
+
+            if (zA > zB) {
+                return -1;
+            }
+            if (zA < zB) {
+                return 1;
+            }
+            return 0;
+        });
+
+
         //register with resize publisher
         system.windowmanagement.resizeSubscribers.push(my);
     }
 
     my.handleResize = function (width, height) {
-        my.sprites[0].setDimensions(16, (height / 2) - 64, my.sprites[0].width, my.sprites[0].height);
-        my.sprites[1].setDimensions(16, (height / 2) - 26, my.sprites[1].width, my.sprites[1].height);
-        my.sprites[2].setDimensions(16, (height / 2) + 12, my.sprites[2].width, my.sprites[2].height);
-        my.sprites[3].setDimensions(width - 48, (height / 2) - 64, my.sprites[3].width, my.sprites[3].height);
-        my.sprites[4].setDimensions(width - 48, (height / 2) - 26, my.sprites[4].width, my.sprites[4].height);
-        my.sprites[5].setDimensions(width - 48, (height / 2) + 12, my.sprites[5].width, my.sprites[5].height);
+        my.sprites[5].setDimensions(16, (height / 2) - 64, my.sprites[5].width, my.sprites[5].height);
+        my.sprites[4].setDimensions(16, (height / 2) - 26, my.sprites[4].width, my.sprites[4].height);
+        my.sprites[3].setDimensions(16, (height / 2) + 12, my.sprites[3].width, my.sprites[3].height);
+        my.sprites[2].setDimensions(width - 48, (height / 2) - 64, my.sprites[2].width, my.sprites[2].height);
+        my.sprites[1].setDimensions(width - 48, (height / 2) - 26, my.sprites[1].width, my.sprites[1].height);
+        my.sprites[0].setDimensions(width - 48, (height / 2) + 12, my.sprites[0].width, my.sprites[0].height);
     }
 
     my.refreshEvents = function () {
