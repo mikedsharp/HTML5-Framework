@@ -11,9 +11,9 @@
         my.mouseY = event.pageY;
     }
     my.init = function () {
-        addEventListener('mousemove', my.checkMouseCoordinates);
-        addEventListener('click', my.checkMouseCoordinates);
-        addEventListener('click', my.notifySubscribers);
+        window.addEventListener('mousemove', my.checkMouseCoordinates);
+        window.addEventListener('click', my.checkMouseCoordinates);
+        window.addEventListener('click', my.notifySubscribers);
     }
 
     my.notifySubscribers = function (event) {
@@ -25,11 +25,11 @@
         // sort subscribers into descending order to reflect how mouse interacts with objects 
         my.subscribers.sort(function (a, b) {
             var zA = 0, zB = 0;
-            if (a.z) {
-                zA = a.z;
+            if (a.obj.z) {
+                zA = a.obj.z;
             }
-            if (b.z) {
-                zB = b.z;
+            if (b.obj.z) {
+                zB = b.obj.z;
             }
 
             if (zA > zB) {
@@ -44,22 +44,25 @@
 
 
         for (var i = 0; i < my.subscribers.length; i++) {
-            if (x < my.subscribers[i].x) {
+            if (x < my.subscribers[i].obj.x) {
                 continue;
             }
-            if (x > my.subscribers[i].x + my.subscribers[i].w) {
+            if (x > my.subscribers[i].obj.x + my.subscribers[i].obj.width) {
                 continue;
             }
-            if (y < my.subscribers[i].y) {
+            if (y < my.subscribers[i].obj.y) {
                 continue;
             }
-            if (y > my.subscribers[i].y + my.subscribers[i].h) {
+            if (y > my.subscribers[i].obj.y + my.subscribers[i].obj.height) {
                 continue;
             }
             // dispatch an event to state handler
-
-            
-            game.state.statemanager.currentState.clickHandler(my.subscribers[i]);
+            if (my.subscribers[i].clickHandler != null && my.subscribers[i].clickHandler != undefined) {
+                my.subscribers[i].clickHandler(my.subscribers[i].obj, my.subscribers[i].id);
+            }
+            else {
+                game.state.statemanager.currentState.clickHandler(my.subscribers[i].obj, my.subscribers[i].id);
+            }
 
             // if we don't want this event to propagate, stop notifying
             if (my.subscribers[i].propagate != undefined && my.subscribers[i].propagate != true) {

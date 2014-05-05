@@ -46,7 +46,8 @@ game.state.statemanager = (function () {
 		my.canvasHeight = document.getElementById('canvas').height;
 		// define default state (this will be replaced by a selection engine when more states are developed
 		my.currentState = game.state.defaultstate;
-		my.currentState.init(); 
+
+		my.currentState.init({screenWidth: my.canvasWidth, screenHeight: my.canvasHeight});
 
         //start first iteration of game loop
 		my.loop(); 

@@ -2,13 +2,31 @@
     var my = {
         xValue: 320,
         yValue: 240,
-        once: false
+        once: false,
+        sprites: []
     };
 
-    my.init = function () {
-        addEventListener('click', my.checkMouseCoordinates);
-        addEventListener('resize', my.refreshEvents)
+    my.init = function (config) {
+        // sprites 
+        my.sprites.push(new game.Sprite({ x: 16, y: (config.screenHeight / 2) - 64, width: 32, z: 0, height: 32, click: { id: 'button1', propagate: false, clickHandler: function () { alert('CLICCKCKKESSZZZZ'); } } }));
+        my.sprites.push(new game.Sprite({ x: 16, y: (config.screenHeight / 2) - 32 + 6, width: 32, z: 1, height: 32, click: { id: 'button2', propagate: false } }));
+        my.sprites.push(new game.Sprite({ x: 16, y: (config.screenHeight / 2) - 0 + 12, width: 32, z: 2, height: 32, click: { id: 'button3', propagate: false } }));
 
+        my.sprites.push(new game.Sprite({ x: config.screenWidth - 48, y: (config.screenHeight / 2) - 64, width: 32, z: 3, height: 32, click: { id: 'button4', propagate: false } }));
+        my.sprites.push(new game.Sprite({ x: config.screenWidth - 48, y: (config.screenHeight / 2) - 32 + 6, width: 32, z: 4, height: 32, click: { id: 'button5', propagate: false } }));
+        my.sprites.push(new game.Sprite({ x: config.screenWidth - 48, y: (config.screenHeight / 2) - 0 + 12, width: 32, z: 5, height: 32, click: { id: 'button6', propagate: false } }));
+
+        //register with resize publisher
+        system.windowmanagement.resizeSubscribers.push(my);
+    }
+
+    my.handleResize = function (width, height) {
+        my.sprites[0].setDimensions(16, (height / 2) - 64, my.sprites[0].width, my.sprites[0].height);
+        my.sprites[1].setDimensions(16, (height / 2) - 26, my.sprites[1].width, my.sprites[1].height);
+        my.sprites[2].setDimensions(16, (height / 2) + 12, my.sprites[2].width, my.sprites[2].height);
+        my.sprites[3].setDimensions(width - 48, (height / 2) - 64, my.sprites[3].width, my.sprites[3].height);
+        my.sprites[4].setDimensions(width - 48, (height / 2) - 26, my.sprites[4].width, my.sprites[4].height);
+        my.sprites[5].setDimensions(width - 48, (height / 2) + 12, my.sprites[5].width, my.sprites[5].height);
     }
 
     my.refreshEvents = function () {
@@ -42,8 +60,8 @@
     my.checkMouseCoordinates = function (event) {
         //console.log('X: ' + event.pageX, 'Y: ' + event.pageY); 
     }
-    my.clickHandler = function (object) {
-        console.log('X: ' + object.x + ' Y: ' + object.y + ' W: ' + object.w + ' H: ' + object.h + ' object name: ' + object.name + ' Collision Detected!');
+    my.clickHandler = function (object, id) {
+        console.log('[DEFAULT CLICK HANDLER] ' + 'X: ' + object.x + ' Y: ' + object.y + ' W: ' + object.width + ' H: ' + object.height + ' object name: ' + id + ' Collision Detected!');
     }
     my.handleLogic = function () {
     }
@@ -57,27 +75,9 @@
         ctx.fillRect(w - 64, 0, 64, h);
         ctx.fillStyle = "grey";
 
-
-        ctx.fillRect(16, (h / 2) - 64, 32, 32);
-        ctx.fillRect(16, (h / 2) - 32 + 6, 32, 32);
-        ctx.fillRect(16, (h / 2) - 0 + 12, 32, 32);
-
-        if (!my.once) {
-            system.event.mousemonitor.subscribers.push({ x: 16, y: (h / 2) - 64, w: 32, z: 0, h: 32, name: 'button1' });
-            system.event.mousemonitor.subscribers.push({ x: 16, y: (h / 2) - 32 + 6, z: 1, w: 32, h: 32, name: 'button2' });
-            system.event.mousemonitor.subscribers.push({ x: 16, y: (h / 2) - 0 + 12, z: 3, w: 32, h: 32, name: 'button3', propagate:false });
-            system.event.mousemonitor.subscribers.push({ x: 32, y: (h / 2) - 0 + 12, z: 2, w: 32, h: 32, name: 'button4', propagate:false });
-            my.once = true;
-        }
-
-        ctx.fillStyle = "magenta";
-        ctx.fillRect(32, (h / 2) - 0 + 12, 32, 32);
-
-
-        ctx.fillRect(w - 48, (h / 2) - 64, 32, 32);
-        ctx.fillRect(w - 48, (h / 2) - 32 + 6, 32, 32);
-        ctx.fillRect(w - 48, (h / 2) - 0 + 12, 32, 32);
-
+        my.sprites.map(function (obj) {
+            ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+        });
 
     }
 
