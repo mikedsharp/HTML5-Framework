@@ -71,6 +71,7 @@ game.state.statemanager = (function () {
 			    // no state, so just clear the screen if we can 
 			    if (my.ctx != null) {
 			        my.ctx.fillfillStyle = "black";
+			        my.ctx.rotate(degreesToRadians(45)); 
 			        my.ctx.fillRect(0, 0, document.getElementById('canvas').width, document.getElementById('canvas').height);
 			    }
 			}

@@ -1,8 +1,15 @@
-﻿game.state.defaultstate = (function () {
+﻿
+game.state.defaultstate = (function () {
     var my = {
         xValue: 320,
         yValue: 240,
+	    width: 48, 
+	    height:64,
+	    direction:0, 
+        xSpeed: 0, 
+        ySpeed: 0, 
         once: false,
+        image: null, 
         sprites: []
     };
 
@@ -37,6 +44,8 @@
 
         //register with resize publisher
         system.windowmanagement.resizeSubscribers.push(my);
+        my.image = new Image();
+        my.image.src = 'img/ship.png';
     }
 
     my.handleResize = function (width, height) {
@@ -55,18 +64,55 @@
 
     my.handleInput = function () {
 
+      
         if (system.event.keymonitor.keyStates.right) {
-            my.xValue += 5;
+             my.xSpeed = 5; 
         }
-        if (system.event.keymonitor.keyStates.left) {
-            my.xValue -= 5;
+        else if (system.event.keymonitor.keyStates.left) {
+            my.xSpeed = -5; 
         }
+        else{
+            my.xSpeed = 0; 
+        }
+
         if (system.event.keymonitor.keyStates.down) {
-            my.yValue += 5;
+            my.ySpeed = 5;
         }
-        if (system.event.keymonitor.keyStates.up) {
-            my.yValue -= 5;
+        else if (system.event.keymonitor.keyStates.up) {
+           my.ySpeed = -5;
         }
+        else{
+            my.ySpeed = 0; 
+        }
+
+      
+
+     
+
+        
+        my.xValue += my.xSpeed;
+         my.yValue += my.ySpeed;
+ 	/*if (system.event.keymonitor.keyStates.plus) {
+              if(my.direction >= 360){
+                my.direction = 0; 
+		my.direction += 5;
+	    }
+	    else{
+	        
+                my.direction += 5;
+            }
+        }
+        if (system.event.keymonitor.keyStates.minus) {
+            if(my.direction <= 0){
+                my.direction = 360; 
+		my.direction -= 5;
+	    }
+	    else{
+	        
+                my.direction -= 5;
+            }
+
+        }*/
         if (system.event.keymonitor.keyStates.spaceBar) {
             console.log('spacebar pushed');
         }
@@ -88,7 +134,27 @@
 
         ctx.clearRect(0, 0, w, h);
         ctx.fillStyle = "black";
-        ctx.fillRect(my.xValue, my.yValue, 100, 50);
+        
+        ctx.save();
+        ctx.translate(my.xValue , my.yValue );
+        
+        // we can obtain the direction of an object by taking it'a speed and finding the
+        // arctangent, this gives us an angle in radians we can use to rotate an object 
+        // so that is pointing in the direction it's heading
+        my.direction = Math.atan2(my.ySpeed, my.xSpeed);
+
+        // the offset needs to be added to correct for differing orientation
+        ctx.rotate(system.util.degreesToRadians(90) + my.direction);
+
+        if(!!my.image){
+            //ctx.fillRect(-my.width/2,  -my.height/2, my.width, my.height);
+            ctx.drawImage(my.image, -my.width/2,  -my.height/2, my.width, my.height);
+        }
+
+       
+
+        ctx.restore(); 
+        
         ctx.fillStyle = "#222";
         ctx.fillRect(0, 0, 64, h);
         ctx.fillRect(w - 64, 0, 64, h);
