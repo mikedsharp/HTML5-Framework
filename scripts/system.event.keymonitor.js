@@ -6,7 +6,9 @@
 			down: false,
 			up: false,
 			enter: false,
-			spaceBar: false
+			spaceBar: false,
+			minus:false,
+			plus: false
 		},
 		KeyCodes: {
 			KEY_LEFT: 37,
@@ -14,7 +16,9 @@
 			KEY_UP: 38,
 			KEY_DOWN: 40,
 			KEY_ENTER: 13,
-			KEY_SPACEBAR: 32
+			KEY_SPACEBAR: 32,
+			KEY_MINUS: 189,
+			KEY_PLUS: 187
 		},
 	};
 
@@ -49,6 +53,15 @@
 			my.keyStates.spaceBar = true;
 
 		}
+		else if (event.keyCode == my.KeyCodes.KEY_MINUS) { // minus
+			my.keyStates.minus = true;
+
+		}
+		else if (event.keyCode == my.KeyCodes.KEY_PLUS) { //SPACEBAR
+			my.keyStates.plus = true;
+
+		}
+
 	}
 	// I'll devise a better way to handle this, than this if else ladder some time soon.
 	my.keyUp = function (event) {
@@ -71,6 +84,14 @@
 		}
 		else if (event.keyCode == my.KeyCodes.KEY_SPACEBAR) { //SPACEBAR
 			my.keyStates.spaceBar = false;
+
+		}
+		else if (event.keyCode == my.KeyCodes.KEY_MINUS) { // minus
+			my.keyStates.minus = false;
+
+		}
+		else if (event.keyCode == my.KeyCodes.KEY_PLUS) { //SPACEBAR
+			my.keyStates.plus = false;
 
 		}
 	}
