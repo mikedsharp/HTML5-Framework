@@ -133,7 +133,7 @@ game.state.defaultstate = (function () {
     my.draw = function (ctx, w, h) {
 
         ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "red";
         
         ctx.save();
         ctx.translate(my.xValue , my.yValue );
@@ -154,6 +154,32 @@ game.state.defaultstate = (function () {
        
 
         ctx.restore(); 
+
+
+        // enemy following the player
+        ctx.save();
+        ctx.translate(w/2 , h/2 );
+        // calculate midpoints between x and y's of tqo objects
+        var deltaX =  (my.xValue)     - w/2 ;
+        var deltaY =  (my.yValue)  - h/2;
+        
+        // find the arctangent and we find the rotation angle in radians
+        var enemyAngle = Math.atan2(deltaY, deltaX);
+
+        // the offset needs to be added to correct for differing orientation
+        ctx.rotate(system.util.degreesToRadians(90) + enemyAngle);
+
+        if(!!my.image){
+            ctx.fillRect(-my.width/2,  -my.height/2, my.width, my.height);
+            ctx.drawImage(my.image, -my.width/2,  -my.height/2, my.width, my.height);
+        }
+
+       
+
+        ctx.restore(); 
+
+
+
         
         ctx.fillStyle = "#222";
         ctx.fillRect(0, 0, 64, h);
